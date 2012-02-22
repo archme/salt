@@ -69,6 +69,32 @@ def list_pkgs():
     return ret
 
 
+def list_upgrade():
+    '''
+    1. Run refresh_db
+    2. Run a ``pacman -Qu``, return a dict:
+
+        {'<package_name>': '<version>'}
+
+    CLI Example::
+
+        salt '*' pkg.list_upgrade
+    '''
+
+    refresh = __salt__['pkg.refresh_db']()
+
+    cmd = 'pacman -Qu'
+    ret = {}
+    out = __salt__['cmd.run'](cmd).split('\n')
+    for line in out:
+        if line.strip().startswith('::'):
+            continue
+        if not line:
+            continue
+        pkg, ver = line.strip().split()
+        ret[pkg] = ver
+    return ret
+
 def refresh_db():
     '''
     Just run a ``pacman -Sy``, return a dict::
