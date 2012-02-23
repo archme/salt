@@ -100,6 +100,7 @@ def include_config(opts, orig_path):
                     if 'id' in conf_opts:
                         conf_opts['id'] = str(conf_opts['id'])
                 opts.update(conf_opts)
+                log.debug('Loaded configuration file: {0}'.format(fn_))
             except Exception, e:
                 msg = 'Error parsing configuration file: {0} - {1}'
                 log.warn(msg.format(fn_, e))
